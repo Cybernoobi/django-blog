@@ -3,7 +3,8 @@
 
 
 <div class="list-group">
+  <a href="{% url 'home' %}" class="list-group-item list-group-item-action">Все статьи</a>
   {% for category in categories %}
-  <a href="#" class="list-group-item list-group-item-action">{{ category }}</a>
+  <a href="{% url 'category_articles' category.pk %}" class="list-group-item list-group-item-action">{{ category }}</a>
   {% endfor %}
 </div>
