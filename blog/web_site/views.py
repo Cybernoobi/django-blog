@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from .models import Article, Category
+from .forms import UserRegistrationForm, UserAuthenticationForm
+from django.contrib.auth import login, logout, authenticate
 
 
 def home_view(request):
@@ -25,4 +27,19 @@ def article_detail(request, article_id):
         "article": article
     }
     return render(request, "web_site/article_detail.html", context)
+
+def login_view(request):
+    form = UserAuthenticationForm()
+    context = {
+        "form": form
+    }
+    return render(request, 'web_site/login.html', context)
+
+
+def register_view(request):
+    form = UserRegistrationForm()
+    context = {
+        "form": form
+    }
+    return render(request, 'web_site/registration.html', context)
 
