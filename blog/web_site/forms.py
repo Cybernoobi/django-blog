@@ -1,6 +1,33 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .models import Article
+
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'short_description', 'full_description', 'photo', 'category']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Напишите заголовок статьи'
+            }),
+            'short_description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Напишите краткое описание статьи'
+            }),
+            'full_description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Напишите полное описание статьи'
+            }),
+            'photo': forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
+            'category': forms.Select(attrs={
+                'class': 'form-control'
+            })
+        }
 
 
 class UserAuthenticationForm(AuthenticationForm):
@@ -22,11 +49,11 @@ class UserRegistrationForm(UserCreationForm):
         "class": "form-control",
         "placeholder": "Введите ваш пароль"
     }))
-
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={
         "class": "form-control",
         "placeholder": "Введите ваш пароль"
     }))
+
     class Meta:
         model = User
         fields = ["username", "email", "password1", "password2"]
@@ -38,14 +65,13 @@ class UserRegistrationForm(UserCreationForm):
             "email": forms.EmailInput(attrs={
                 "class": "form-control",
                 "placeholder": "Введите ваш email"
-            })
+            }),
             # "password1": forms.PasswordInput(attrs={
             #     "class": "form-control",
-            #     "placeholder": "Введите ваш пароль"
+            #     "placeholder": "Ваш пароль"
             # }),
             # "password2": forms.PasswordInput(attrs={
             #     "class": "form-control",
-            #     "placeholder": "Подтвердите ваш пароль"
-            # })
+            #     "placeholder": "Подтвердить пароль"
+            # }),
         }
-

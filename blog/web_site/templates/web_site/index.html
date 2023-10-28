@@ -4,7 +4,9 @@
 Главная страница
 {% endblock title %}
 
+
 {% block content %}
+
 <div class="row row-gap-4">
     {% for article in articles %}
     <div class="col-4">
@@ -16,16 +18,16 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    Просмотров: <b>{{ article.view }}</b>
+                    Кол-во просмотров: <b>{{ article.views }}</b>
                 </li>
                 <li class="list-group-item">
                     Автор: <b>{{ article.author }}</b>
                 </li>
                 <li class="list-group-item">
-                    Категория: <b>{{ article.category }}</b>
+                    Время создания: <b>{{ article.created_at }}</b>
                 </li>
                 <li class="list-group-item">
-                    Создано в <b>{{ article.created_at }}</b>
+                    Категория: <b>{{ article.category }}</b>
                 </li>
             </ul>
             <div class="card-body">

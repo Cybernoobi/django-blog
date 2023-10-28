@@ -5,7 +5,6 @@
 {% endblock title %}
 
 {% block content %}
-
 <div class="card">
     <img src="{{ article.photo.url }}" class="card-img-top" alt="...">
     <div class="card-body">
@@ -14,28 +13,29 @@
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
-            Просмотров: <b>{{ article.view }}</b>
+            Кол-во просмотров: <b>{{ article.views }}</b>
         </li>
         <li class="list-group-item">
             Автор: <b>{{ article.author }}</b>
         </li>
         <li class="list-group-item">
-            Категория: <b>{{ article.category }}</b>
+            Время создания: <b>{{ article.created_at }}</b>
         </li>
         <li class="list-group-item">
-            Создано в <b>{{ article.created_at }}</b>
+            Категория: <b>{{ article.category }}</b>
         </li>
     </ul>
-    <div class="card-body d-flex justify-content-between align-item-center">
+    <div class="card-body d-flex justify-content-between align-items-center">
+        {% if requests.user.is_authenticated and requests.user == article.author %}
         <div class="d-flex gap-3">
             <a href="#" class="btn btn-danger">Удалить</a>
             <a href="#" class="btn btn-warning">Изменить</a>
         </div>
+        {% endif %}
         <div class="d-flex gap-3">
-            <a href="#" class="btn btn-success">Лайк</a>
             <a href="#" class="btn btn-danger">Дизлайк</a>
+            <a href="#" class="btn btn-success">Лайк</a>
         </div>
     </div>
 </div>
-
 {% endblock content %}
