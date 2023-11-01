@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 # Create your models here.
 
 """
@@ -26,3 +28,7 @@ class Article(models.Model):
     updated_at = models.DateTimeField(verbose_name="Дата обновления", auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="articles")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория", related_name="articles")
+
+    def get_absolute_url(self):
+        return reverse('article_detail', kwargs={'article_id': self.pk})
+

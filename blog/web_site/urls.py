@@ -6,7 +6,8 @@ from . import views
 # path(endpoint, view, name='url name')
 
 urlpatterns = [
-    path('', views.home_view, name='home'),
+    # path('', views.home_view, name='home'),
+    path('', views.ArticleListView.as_view(), name='home'),
     path('categories/<str:category_id>/', views.category_articles, name="category_articles"),
     path('articles/<str:article_id>/', views.article_detail, name='article_detail'),
 
@@ -14,5 +15,10 @@ urlpatterns = [
     path('registration/', views.registration_view, name="registration"),
     path('logout/', views.user_logout, name="logout"),
 
-    path('create/article/', views.created_article, name="create")
+    path('create/article/', views.created_article, name="create"),
+    path('delete/article/<int:pk>/', views.ArticleDeleteView.as_view(), name="delete"),
+    path('update/article/<int:pk>/', views.ArticleUpdateView.as_view(), name="update"),
+
+
+    path('search/', views.SearchResult.as_view(), name="search")
 ]

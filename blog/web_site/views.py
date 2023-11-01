@@ -2,7 +2,35 @@ from django.shortcuts import render, HttpResponse, redirect
 
 from .models import Article, Category
 from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm
+
 from django.contrib.auth import login, logout, authenticate
+from django.views.generic import UpdateView, DeleteView, ListView
+from django.db.models import Q
+
+
+class ArticleListView(ListView):
+    model = Article
+    template_name = "web_site/index.html"
+    context_object_name = "articles"
+
+
+class SearchResult(ArticleListView):
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return Article.objects.filter(
+            Q(title__iregex=query) | Q(short_description__iregex=query)
+        )
+
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = 'web_site/article_form.html'
+
+
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = "/"
 
 
 def home_view(request):
