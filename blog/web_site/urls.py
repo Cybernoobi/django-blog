@@ -20,5 +20,7 @@ urlpatterns = [
     path('update/article/<int:pk>/', views.ArticleUpdateView.as_view(), name="update"),
 
 
-    path('search/', views.SearchResult.as_view(), name="search")
+    path('search/', views.SearchResult.as_view(), name="search"),
+    
+    path('users/<str:username>/', views.profile_view, name="profile")
 ]

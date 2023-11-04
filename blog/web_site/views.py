@@ -6,6 +6,7 @@ from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm
 from django.contrib.auth import login, logout, authenticate
 from django.views.generic import UpdateView, DeleteView, ListView
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 
 class ArticleListView(ListView):
@@ -114,3 +115,16 @@ def created_article(request):
     }
 
     return render(request, 'web_site/article_form.html', context)
+
+
+def profile_view(request, username):
+    user = User.objects.get(username=username)
+    articles = user.articles.all()
+
+    context = {
+        "user": user,
+        "total_views": 0,
+        "total_comments": 0,
+        "articles": articles
+    }
+    return render (request, "web_site/profile.html", context)

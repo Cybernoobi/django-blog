@@ -15,7 +15,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'create' %}">Добавить статью</a></li>
-                        <li><a class="dropdown-item" href="#">Мой профиль</a></li>
+                        <li><a class="dropdown-item" href="{% url 'profile' request.user.username %}">Мой профиль</a></li>
                         <li><a class="dropdown-item" href="#">Избранное</a></li>
                         <li>
                             <hr class="dropdown-divider">
