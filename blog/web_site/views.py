@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 
 from .models import Article, Category
-from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm
+from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm, CommentForm
 
 from django.contrib.auth import login, logout, authenticate
 from django.views.generic import UpdateView, DeleteView, ListView
@@ -53,8 +53,16 @@ def category_articles(request, category_id):
 
 def article_detail(request, article_id):
     article = Article.objects.get(pk=article_id)
+    
+    if request.method == 'POST':
+        form = CommentForm
+    else:
+        form = CommentForm
+    
+    
     context = {
-        "article": article
+        "article": article,
+        "form": form
     }
     return render(request, "web_site/article_detail.html", context)
 
