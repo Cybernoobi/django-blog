@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 
-from .models import Article, Category
+from .models import Article, Category, Comment, ArticleCountView
 from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm, CommentForm
 
 from django.contrib.auth import login, logout, authenticate
@@ -53,16 +53,43 @@ def category_articles(request, category_id):
 
 def article_detail(request, article_id):
     article = Article.objects.get(pk=article_id)
-    
+
     if request.method == 'POST':
-        form = CommentForm
+        # request.POST
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.article = article
+            form.author = request.user
+            form.save()
+            return redirect('article_detail', article.pk)
     else:
-        form = CommentForm
-    
-    
+        form = CommentForm()
+
+   
+    comments = Comment.objects.filter(article=article)
+    print(comments)
+
+    if not request.session.session_key:
+        request.session.save()
+
+    session_id = request.session.session_key
+
+    viewed = ArticleCountView.objects.filter(article=article, session_id=session_id)
+    if viewed.count() == 0 and str(session_id) != 'None':
+        obj = ArticleCountView()
+        obj.session_id = session_id
+        obj.article = article
+        obj.save()
+
+        # изменение кол-ва просмотров
+        article.views += 1
+        article.save()
+
     context = {
         "article": article,
-        "form": form
+        "form": form,
+        "comments": comments
     }
     return render(request, "web_site/article_detail.html", context)
 
