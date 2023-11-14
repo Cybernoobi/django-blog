@@ -21,7 +21,12 @@
                     Кол-во просмотров: <b>{{ article.views }}</b>
                 </li>
                 <li class="list-group-item">
-                    Автор: <b>{{ article.author }}</b>
+                    Автор: 
+                    <b>
+                        <a href="{% url 'profile' article.author %}">
+                            {{ article.author }}
+                        </a>
+                    </b>
                 </li>
                 <li class="list-group-item">
                     Время создания: <b>{{ article.created_at }}</b>
