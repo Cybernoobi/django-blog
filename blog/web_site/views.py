@@ -1,12 +1,11 @@
-from django.shortcuts import render, HttpResponse, redirect
-
-from .models import Article, Category, Comment, ArticleCountView
-from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm, CommentForm
-
 from django.contrib.auth import login, logout, authenticate
-from django.views.generic import UpdateView, DeleteView, ListView
-from django.db.models import Q
 from django.contrib.auth.models import User
+from django.db.models import Q
+from django.shortcuts import render, redirect
+from django.views.generic import UpdateView, DeleteView, ListView
+
+from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm, CommentForm
+from .models import Article, Category, Comment, ArticleCountView, Like, DisLike
 
 
 class ArticleListView(ListView):
@@ -66,7 +65,6 @@ def article_detail(request, article_id):
     else:
         form = CommentForm()
 
-   
     comments = Comment.objects.filter(article=article)
     print(comments)
 
@@ -86,10 +84,25 @@ def article_detail(request, article_id):
         article.views += 1
         article.save()
 
+    total_likes = article.likes.user.all().count()
+    total_dislikes = article.dislikes.user.all().count()
+
+    try:
+        article.likes
+    except Exception as e:
+        Like.objects.create(article=article)
+
+    try:
+        article.dislikes
+    except Exception as e:
+        DisLike.objects.create(article=article)
+
     context = {
         "article": article,
         "form": form,
-        "comments": comments
+        "comments": comments,
+        "total_likes": total_likes,
+        "total_dislikes": total_dislikes
     }
     return render(request, "web_site/article_detail.html", context)
 
@@ -162,4 +175,36 @@ def profile_view(request, username):
         "total_comments": 0,
         "articles": articles
     }
-    return render (request, "web_site/profile.html", context)
+    return render(request, "web_site/profile.html", context)
+
+
+def add_like_dislike(request, article_id, action):
+    from django.shortcuts import get_object_or_404
+
+    article = get_object_or_404(Article, pk=article_id)
+
+    try:
+        article.likes
+    except Exception as e:
+        Like.objects.create(article=article)
+
+    try:
+        article.dislikes
+    except Exception as e:
+        DisLike.objects.create(article=article)
+
+    if action == 'add_like':
+        if request.user in article.likes.user.all():
+            article.likes.user.remove(request.user.pk)
+        else:
+            article.likes.user.add(request.user.pk)
+            article.dislikes.user.remove(request.user.pk)
+
+    elif action == 'add_dislike':
+        if request.user in article.dislikes.user.all():
+            article.dislikes.user.remove(request.user.pk)
+        else:
+            article.dislikes.user.add(request.user.pk)
+            article.likes.user.remove(request.user.pk)
+
+    return redirect(request.environ['HTTP_REFERER'])

@@ -22,5 +22,7 @@ urlpatterns = [
 
     path('search/', views.SearchResult.as_view(), name="search"),
     
-    path('users/<str:username>/', views.profile_view, name="profile")
+    path('users/<str:username>/', views.profile_view, name="profile"),
+
+    path('add_vote/<int:article_id>/<str:action>', views.add_like_dislike, name="add_vote"),
 ]

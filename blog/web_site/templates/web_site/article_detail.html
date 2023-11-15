@@ -16,7 +16,7 @@
             Кол-во просмотров: <b>{{ article.views }}</b>
         </li>
         <li class="list-group-item">
-            Автор: 
+            Автор:
             <b>
                 <a href="{% url 'profile' article.author %}">
                 {{ article.author }}
@@ -38,8 +38,10 @@
         </div>
         {% endif %}
         <div class="d-flex gap-3">
-            <a href="#" class="btn btn-danger">Дизлайк</a>
-            <a href="#" class="btn btn-success">Лайк</a>
+            <a href="{% url 'add_vote' article.pk 'add_dislike' %}"
+               class="btn btn-danger">Дизлайков {{ total_dislikes }}</a>
+            <a href="{% url 'add_vote' article.pk 'add_like' %}"
+               class="btn btn-success">Лайков {{ total_likes }}</a>
         </div>
     </div>
 </div>

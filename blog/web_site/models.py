@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-# Create your models here.
+# Создание своих моделек.
 
 """
 create table if not exists category(
@@ -43,3 +43,15 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="comments")
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     body = models.TextField()
+
+
+class Like(models.Model):
+    user = models.ManyToManyField(User, related_name="likes")
+    article = models.OneToOneField(Article, on_delete=models.CASCADE, related_name="likes")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class DisLike(models.Model):
+    user = models.ManyToManyField(User, related_name="dislikes")
+    article = models.OneToOneField(Article, on_delete=models.CASCADE, related_name="dislikes")
+    created_at = models.DateTimeField(auto_now_add=True)
