@@ -208,3 +208,7 @@ def add_like_dislike(request, article_id, action):
             article.likes.user.remove(request.user.pk)
 
     return redirect(request.environ['HTTP_REFERER'])
+
+
+def user_favorites_view(request, username):
+    return render(request, "web_site/favorite.html")

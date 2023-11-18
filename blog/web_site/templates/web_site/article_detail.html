@@ -39,9 +39,9 @@
         {% endif %}
         <div class="d-flex gap-3">
             <a href="{% url 'add_vote' article.pk 'add_dislike' %}"
-               class="btn btn-danger">Дизлайков {{ total_dislikes }}</a>
+               class="btn btn-danger"><i class="bi bi-hand-thumbs-down"></i>  {{ total_dislikes }}</a>
             <a href="{% url 'add_vote' article.pk 'add_like' %}"
-               class="btn btn-success">Лайков {{ total_likes }}</a>
+               class="btn btn-success"><i class="bi bi-hand-thumbs-up"></i>  {{ total_likes }}</a>
         </div>
     </div>
 </div>

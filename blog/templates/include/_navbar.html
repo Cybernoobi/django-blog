@@ -16,7 +16,6 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'create' %}">Добавить статью</a></li>
                         <li><a class="dropdown-item" href="{% url 'profile' request.user.username %}">Мой профиль</a></li>
-                        <li><a class="dropdown-item" href="#">Избранное</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -35,6 +34,17 @@
                         </label>
                     </form>
                 </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'favorites' request.user.username %}" class="nav-link position-relative">
+                        Избранные
+                        <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger">
+                            99+
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </a>
+                </li>
+                {% endif %}
             </ul>
             <div class="d-flex column-gap-2 align-items-center">
                 <form class="d-flex" role="search" action="{% url 'search' %}">
