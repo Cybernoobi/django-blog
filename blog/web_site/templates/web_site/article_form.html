@@ -2,9 +2,8 @@
 
 {% block title %}
 
-<!-- Создание статей -->
 {% if 'create' in request.path %}
-Создать статью:
+Создать статью
 {% else %}
 Обнавить статью: {{ article.title }}
 {% endif %}

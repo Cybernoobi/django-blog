@@ -84,9 +84,6 @@ def article_detail(request, article_id):
         article.views += 1
         article.save()
 
-    total_likes = article.likes.user.all().count()
-    total_dislikes = article.dislikes.user.all().count()
-
     try:
         article.likes
     except Exception as e:
@@ -97,6 +94,8 @@ def article_detail(request, article_id):
     except Exception as e:
         DisLike.objects.create(article=article)
 
+    total_likes = article.likes.user.all().count()
+    total_dislikes = article.dislikes.user.all().count()
     context = {
         "article": article,
         "form": form,
@@ -105,7 +104,6 @@ def article_detail(request, article_id):
         "total_dislikes": total_dislikes
     }
     return render(request, "web_site/article_detail.html", context)
-
 
 def login_view(request):
     if request.method == "POST":
