@@ -29,6 +29,11 @@ class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор", related_name="articles")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория", related_name="articles")
 
+    
+    def __str__(self):
+        return self.title
+    
+    
     def get_absolute_url(self):
         return reverse('article_detail', kwargs={'article_id': self.pk})
 
@@ -55,3 +60,19 @@ class DisLike(models.Model):
     user = models.ManyToManyField(User, related_name="dislikes")
     article = models.OneToOneField(Article, on_delete=models.CASCADE, related_name="dislikes")
     created_at = models.DateTimeField(auto_now_add=True)
+    
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name="Статья")
+    
+    
+    def __str__(self):
+        return f"{self.user}: {self.article}"
+    
+    
+    class Meta:
+        verbose_name = "Избранная статья"
+        verbose_name_plural = "Избранные статьи"
+        
+    

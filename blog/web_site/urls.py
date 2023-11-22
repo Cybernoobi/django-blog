@@ -1,12 +1,8 @@
 from django.urls import path
 from . import views
 
-# http://127.0.0.1:8000/
-# path(путь, что сделать, кроткое название)
-# path(endpoint, view, name='url name')
 
 urlpatterns = [
-    # path('', views.home_view, name='home'),
     path('', views.ArticleListView.as_view(), name='home'),
     path('categories/<str:category_id>/', views.category_articles, name="category_articles"),
     path('articles/<str:article_id>/', views.article_detail, name='article_detail'),
@@ -23,7 +19,10 @@ urlpatterns = [
     path('search/', views.SearchResult.as_view(), name="search"),
     
     path('users/<str:username>/', views.profile_view, name="profile"),
-    path('users/<str:username>/favorites', views.user_favorites_view, name="favorites"),
 
     path('add_vote/<int:article_id>/<str:action>', views.add_like_dislike, name="add_vote"),
+    
+    path('users/<str:username>/favorites', views.user_favorites_view, name="favorites"),
+    path('users/<str:username>/favorites/add/<int:article_id>', views.add_favorite, name="add_fav"),
+    path('users/<str:username>/favorites/delete/<int:article_id>', views.delete_favorite, name="delete_fav"),
 ]

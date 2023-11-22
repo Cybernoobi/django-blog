@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import UpdateView, DeleteView, ListView
 
 from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm, CommentForm
-from .models import Article, Category, Comment, ArticleCountView, Like, DisLike
+from .models import Article, Category, Comment, ArticleCountView, Like, DisLike, Favorite
 
 
 class ArticleListView(ListView):
@@ -208,6 +208,29 @@ def add_like_dislike(request, article_id, action):
             article.likes.user.remove(request.user.pk)
 
     return redirect(request.environ['HTTP_REFERER'])
+
+
+def add_favorite(request, username, article_id):
+    user = User.objects.filter(username=username).first()
+    article = Article.objects.filter(pk=article_id).first()
+    
+    fav_obj = Favorite.objects.create(
+        user=user,
+        article=article
+    )
+    fav_obj.save()
+    
+    return redirect('home')
+
+
+def delete_favorite(request, username, article_id):
+    user = User.objects.filter(username=username).first()
+    article = Article.objects.filter(pk=article_id).first()
+    
+    obj = Favorite.objects.filter(user=user, article=article).first()
+    obj.delete()
+    
+    return redirect('home')
 
 
 def user_favorites_view(request, username):
