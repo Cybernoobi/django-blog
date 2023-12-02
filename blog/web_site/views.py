@@ -111,7 +111,6 @@ def article_detail(request, article_id):
     }
     return render(request, "web_site/article_detail.html", context)
 
-
 def login_view(request):
     if request.method == "POST":
         form = UserAuthenticationForm(data=request.POST)
