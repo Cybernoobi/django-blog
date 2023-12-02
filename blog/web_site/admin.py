@@ -1,11 +1,12 @@
 from django.contrib import admin
 
 from .models import Category, Article, Favorite
+from modeltranslation.admin import TranslationAdmin
 
 
-# Register your models here.
 
-class ArticleAdmin(admin.ModelAdmin):
+
+class ArticleAdmin(TranslationAdmin):
     list_display = ('pk', 'title', 'created_at', 'views', 'category', 'author')
     list_display_links = ('pk', 'title')
     list_filter = ('created_at', 'category', 'author')
@@ -13,6 +14,10 @@ class ArticleAdmin(admin.ModelAdmin):
     readonly_fields = ('views',)
 
 
-admin.site.register(Category)
-admin.site.register(Article, ArticleAdmin)
+class CategoryAdmin(TranslationAdmin):
+    list_display = ('pk', 'name')
+    
+
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Favorite)
+admin.site.register(Article, ArticleAdmin)

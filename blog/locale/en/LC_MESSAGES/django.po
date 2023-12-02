@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-25 16:28+0500\n"
+"POT-Creation-Date: 2023-11-29 16:30+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: .\templates\include\_navbar.html:23
-msgid "Добавить статью"
-msgstr ""
 
 #: .\templates\include\_navbar.html:24
+msgid "Добавить статью"
+msgstr "Add article"
+
+#: .\templates\include\_navbar.html:25
 msgid "Мой профиль"
-msgstr ""
+msgstr "Profile"
 
-#: .\templates\include\_navbar.html:28 .\templates\include\_navbar.html:66
+#: .\templates\include\_navbar.html:30 .\templates\include\_navbar.html:74
 msgid "Выйти"
-msgstr ""
+msgstr "Log out"
 
-#: .\templates\include\_navbar.html:46
-msgid "Избранные"
-msgstr ""
+#: .\templates\include\_navbar.html:53
+msgid "Избранное"
+msgstr "Favorites"
 
-#: .\templates\include\_navbar.html:60
+#: .\templates\include\_navbar.html:67 .\templates\include\_navbar.html:68
 msgid "Поиск"
-msgstr ""
+msgstr "Search"
 
-#: .\templates\include\_navbar.html:63
+#: .\templates\include\_navbar.html:71
 msgid "Войти"
-msgstr ""
+msgstr "Log in"
 
-#: .\templates\include\_navbar.html:64
+#: .\templates\include\_navbar.html:72
 msgid "Регистрация"
-msgstr ""
+msgstr "Sign up"

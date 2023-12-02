@@ -9,12 +9,12 @@
     {% csrf_token %}
 
     <p>
-        Вы действительно хотите удалить статью "<b>{{ article.title }}</b>"
+        <i>Вы действительно хотите удалить статью с названием: <b>{{ article.title }}</b></i>
     </p>
 
     <input type="submit" class="btn btn-danger" value="Да, удалить">
-    <a href="{% url 'article_detail' article.pk %}" class="btn btn-secondary">
-        Нет, отменить
+    <a href="{{ article.get_absolute_url }}" class="btn btn-secondary">
+        Обратно
     </a>
 </form>
-{% endblock content %}
+{% endblock %}

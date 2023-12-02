@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import UpdateView, DeleteView, ListView
 
 from .forms import UserRegistrationForm, UserAuthenticationForm, ArticleForm, CommentForm
-from .models import Article, Category, Comment, ArticleCountView, Like, DisLike, Favorite
+from .models import Article, Category, Comment, ArticleCountView, Like, Dislike, Favorite
 
 
 class ArticleListView(ListView):
@@ -26,6 +26,10 @@ class ArticleUpdateView(UpdateView):
     model = Article
     form_class = ArticleForm
     template_name = 'web_site/article_form.html'
+
+    # def form_valid(self, form):
+    #     print(self.get_success_url())
+    #     return redirect('home')
 
 
 class ArticleDeleteView(DeleteView):
@@ -65,6 +69,8 @@ def article_detail(request, article_id):
     else:
         form = CommentForm()
 
+    # TODO: получить все коментарии статьи и вывести их на детальной
+    # TODO: странице продукта
     comments = Comment.objects.filter(article=article)
     print(comments)
 
@@ -84,9 +90,6 @@ def article_detail(request, article_id):
         article.views += 1
         article.save()
 
-    total_likes = article.likes.user.all().count()
-    total_dislikes = article.dislikes.user.all().count()
-
     try:
         article.likes
     except Exception as e:
@@ -95,8 +98,10 @@ def article_detail(request, article_id):
     try:
         article.dislikes
     except Exception as e:
-        DisLike.objects.create(article=article)
+        Dislike.objects.create(article=article)
 
+    total_likes = article.likes.user.all().count()
+    total_dislikes = article.dislikes.user.all().count()
     context = {
         "article": article,
         "form": form,
@@ -147,8 +152,8 @@ def user_logout(request):
     return redirect('home')
 
 
-def created_article(request):
-    if request.method == 'POST':
+def create_article(request):
+    if request.method == "POST":
         form = ArticleForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             form = form.save(commit=False)
@@ -159,7 +164,7 @@ def created_article(request):
         form = ArticleForm()
 
     context = {
-        'form': form
+        "form": form
     }
 
     return render(request, 'web_site/article_form.html', context)
@@ -168,17 +173,19 @@ def created_article(request):
 def profile_view(request, username):
     user = User.objects.get(username=username)
     articles = user.articles.all()
-
+    total_views = [article.views for article in articles]
     context = {
         "user": user,
-        "total_views": 0,
+        "total_views": sum(total_views),
         "total_comments": 0,
         "articles": articles
     }
     return render(request, "web_site/profile.html", context)
 
 
-def add_like_dislike(request, article_id, action):
+def add_like_or_dislike(request, article_id, action):
+    # add_like
+    # add_dislike
     from django.shortcuts import get_object_or_404
 
     article = get_object_or_404(Article, pk=article_id)
@@ -191,7 +198,7 @@ def add_like_dislike(request, article_id, action):
     try:
         article.dislikes
     except Exception as e:
-        DisLike.objects.create(article=article)
+        Dislike.objects.create(article=article)
 
     if action == 'add_like':
         if request.user in article.likes.user.all():
@@ -199,39 +206,41 @@ def add_like_dislike(request, article_id, action):
         else:
             article.likes.user.add(request.user.pk)
             article.dislikes.user.remove(request.user.pk)
-
     elif action == 'add_dislike':
         if request.user in article.dislikes.user.all():
             article.dislikes.user.remove(request.user.pk)
         else:
             article.dislikes.user.add(request.user.pk)
             article.likes.user.remove(request.user.pk)
-
     return redirect(request.environ['HTTP_REFERER'])
 
 
 def add_favorite(request, username, article_id):
     user = User.objects.filter(username=username).first()
     article = Article.objects.filter(pk=article_id).first()
-    
+
     fav_obj = Favorite.objects.create(
         user=user,
         article=article
     )
     fav_obj.save()
-    
     return redirect('home')
 
 
 def delete_favorite(request, username, article_id):
     user = User.objects.filter(username=username).first()
     article = Article.objects.filter(pk=article_id).first()
-    
     obj = Favorite.objects.filter(user=user, article=article).first()
     obj.delete()
-    
-    return redirect('home')
+    return redirect(request.environ['HTTP_REFERER'])
 
 
-def user_favorites_view(request, username):
-    return render(request, "web_site/favorite.html")
+def user_favourites_view(request, username):
+    user = User.objects.get(username=username)
+    favorites = Favorite.objects.filter(user=user)
+    articles = [fav.article for fav in favorites]
+    context = {
+        "articles": articles
+    }
+    return render(request, "web_site/favourites.html", context)
+

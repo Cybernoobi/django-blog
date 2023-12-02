@@ -10,11 +10,10 @@ class CommentForm(forms.ModelForm):
         fields = ['body']
         widgets = {
             'body': forms.Textarea(attrs={
-                'class': 'form-control mb-3',
-                'placeholder': 'Написать комментрий'
-            })
+                'class': 'form-control',
+                'placeholder': 'Ваш комментарий'
+            }),
         }
-
 
 
 class ArticleForm(forms.ModelForm):
@@ -35,10 +34,11 @@ class ArticleForm(forms.ModelForm):
                 'placeholder': 'Напишите полное описание статьи'
             }),
             'photo': forms.FileInput(attrs={
-                'class': 'form-control'
+                'class': 'form-control',
             }),
             'category': forms.Select(attrs={
-                'class': 'form-control'
+                'class': 'form-select',
+                'placeholder': 'Выберите категорию'
             })
         }
 
@@ -69,7 +69,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["username", "email"]
+        fields = ["username", "email", "password1", "password2"]
         widgets = {
             "username": forms.TextInput(attrs={
                 "class": "form-control",
@@ -78,4 +78,13 @@ class UserRegistrationForm(UserCreationForm):
             "email": forms.EmailInput(attrs={
                 "class": "form-control",
                 "placeholder": "Введите ваш email"
-            }),}
+            }),
+            # "password1": forms.PasswordInput(attrs={
+            #     "class": "form-control",
+            #     "placeholder": "Ваш пароль"
+            # }),
+            # "password2": forms.PasswordInput(attrs={
+            #     "class": "form-control",
+            #     "placeholder": "Подтвердить пароль"
+            # }),
+        }

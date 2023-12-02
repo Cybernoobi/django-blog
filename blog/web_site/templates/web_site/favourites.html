@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Избранное
+{% endblock %}
+
+{% block content %}
+<div class="row row-gap-4">
+    {% for article in articles %}
+    <div class="col-4">
+        <div class="card">
+            <img src="{{ article.photo.url }}" class="card-img-top" alt="..." style="height: 300px; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text">{{ article.short_description }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    Кол-во просмотров: <b>{{ article.views }}</b>
+                </li>
+                <li class="list-group-item">
+                    Автор: <b>{{ article.author }}</b>
+                </li>
+                <li class="list-group-item">
+                    Время создания: <b>{{ article.created_at }}</b>
+                </li>
+                <li class="list-group-item">
+                    Категория: <b>{{ article.category }}</b>
+                </li>
+            </ul>
+            <div class="card-body d-flex align-items-center justify-content-between">
+                <a href="{% url 'article_detail' article.pk %}" class="card-link">Подробнее</a>
+                <a href="{% url 'delete_fav' username=request.user.username article_id=article.pk %}"
+                   class="text-danger fs-5"><i class="bi bi-trash"></i></a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+

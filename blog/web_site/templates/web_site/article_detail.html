@@ -16,12 +16,7 @@
             Кол-во просмотров: <b>{{ article.views }}</b>
         </li>
         <li class="list-group-item">
-            Автор:
-            <b>
-                <a href="{% url 'profile' article.author %}">
-                {{ article.author }}
-                </a>
-            </b>
+            Автор: <b>{{ article.author }}</b>
         </li>
         <li class="list-group-item">
             Время создания: <b>{{ article.created_at }}</b>
@@ -37,11 +32,12 @@
             <a href="{% url 'update' article.pk %}" class="btn btn-warning">Изменить</a>
         </div>
         {% endif %}
+
         <div class="d-flex gap-3">
             <a href="{% url 'add_vote' article.pk 'add_dislike' %}"
-               class="btn btn-danger"><i class="bi bi-hand-thumbs-down"></i>  {{ total_dislikes }}</a>
+               class="btn btn-danger">Дизлайк {{ total_dislikes }}</a>
             <a href="{% url 'add_vote' article.pk 'add_like' %}"
-               class="btn btn-success"><i class="bi bi-hand-thumbs-up"></i>  {{ total_likes }}</a>
+               class="btn btn-success">Лайк {{ total_likes }}</a>
         </div>
     </div>
 </div>
@@ -51,7 +47,7 @@
     <h2 class="text-center">Комментарии</h2>
     {% if not request.user.is_authenticated %}
     <p class="text-center">
-        Оставлять комментраии могут только авторизованные пользователи
+        Оставлять комментарии могут только авторизованные пользователи
         <a href="{% url 'login' %}">Войти</a>
     </p>
     {% endif %}
@@ -60,27 +56,28 @@
         {% for comment in comments %}
         <div class="card">
             <div class="card-header">
-                <a href="{% url 'profile' comment.author %}">
-                    {{ comment.author }}
-                </a>
+                {{ comment.created_at }}
             </div>
             <div class="card-body">
                 <blockquote class="blockquote mb-0">
                     <p>{{ comment.body }}</p>
-                    <footer class="blockquote-footer"><cite title="{{ comment.created_at }}">{{ comment.created_at }}</cite>
+                    <footer class="blockquote-footer"><cite title="{{ comment.author }}">{{ comment.author }}</cite>
                     </footer>
                 </blockquote>
             </div>
         </div>
         {% endfor %}
+
     </div>
 
     {% if request.user.is_authenticated %}
     <form action="" method="post">
         {% csrf_token %}
         {{ form.body }}
-        <button class="btn btn-info mb-3">Отправить</button>
+        <button class="btn btn-secondary">Send</button>
     </form>
     {% endif %}
+
+
 </div>
 {% endblock content %}
